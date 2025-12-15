@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Avatique Admin</title>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      body {
+        font-family: "Inter", sans-serif;
+        background-color: #f3f4f6;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        min-height: 100vh;
+        margin: 0;
+        color: #1f2937;
+      }
+      .container {
+        background: white;
+        padding: 2rem;
+        border-radius: 12px;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        width: 100%;
+        max-width: 500px;
+      }
+      h1 {
+        margin-top: 0;
+        font-size: 1.5rem;
+        color: #111827;
+      }
+      .form-group {
+        margin-bottom: 1rem;
+      }
+      input[type="password"] {
+        width: 100%;
+        padding: 0.75rem;
+        border: 1px solid #d1d5db;
+        border-radius: 6px;
+        font-size: 1rem;
+        box-sizing: border-box;
+      }
+      button {
+        width: 100%;
+        padding: 0.75rem;
+        background-color: #2ca58d;
+        color: white;
+        border: none;
+        border-radius: 6px;
+        font-size: 1rem;
+        font-weight: 600;
+        cursor: pointer;
+        transition: background-color 0.2s;
+      }
+      button:hover {
+        background-color: #1a7f6c;
+      }
+      .logs {
+        margin-top: 1.5rem;
+        background: #1f2937;
+        color: #d1d5db;
+        padding: 1rem;
+        border-radius: 6px;
+        font-family: monospace;
+        max-height: 300px;
+        overflow-y: auto;
+        white-space: pre-wrap;
+      }
+      .error {
+        color: #ef4444;
+        margin-bottom: 1rem;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <h1>Admin Dashboard</h1>
+
+      {% if error %}
+      <div class="error">{{ error }}</div>
+      {% endif %}
+
+      <form method="POST" action="/send_emails">
+        <div class="form-group">
+          <label for="password">Enter Admin Password</label>
+          <input
+            type="password"
+            id="password"
+            name="password"
+            required
+            placeholder="Enter your email password"
+          />
+        </div>
+        <button
+          type="submit"
+          onclick="return confirm('Are you sure you want to email ALL subscribers?')"
+        >
+          Send Campaign
+        </button>
+      </form>
+
+      {% if logs %}
+      <div class="logs">
+        <strong>Execution Logs:</strong><br />
+        {% for log in logs %} {{ log }}<br />
+        {% endfor %}
+      </div>
+      {% endif %}
+    </div>
+  </body>
+</html>

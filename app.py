@@ -53,5 +53,35 @@ def submit():
         print(f"Error: {e}")
         return jsonify({'status': 'error', 'message': 'An error occurred (probably already joined).'}), 400
 
+@app.route('/admin')
+def admin():
+    return render_template('admin.html')
+
+@app.route('/send_emails', methods=['POST'])
+def trigger_campaign():
+    password = request.form.get('password')
+    # Simple security check: match the EMAIL_PASSWORD
+    # (In a real app we'd use a separate ADMIN_PASSWORD and hash it, but this is a quick minimal solution)
+    correct_password = os.getenv('EMAIL_PASSWORD')
+    
+    # Fallback for local dev if env not set
+    if not correct_password:
+         try:
+            from avatique.password import password as local_password
+            correct_password = local_password
+         except:
+             pass
+
+    if not correct_password or password != correct_password:
+        return render_template('admin.html', error="Invalid Password")
+
+    # Import here to avoid circular dependency (app -> send_campaign -> app)
+    from send_campaign import send_campaign
+    
+    # Run the campaign
+    logs = send_campaign()
+    
+    return render_template('admin.html', logs=logs)
+
 if __name__ == '__main__':
     app.run(debug=True, port=5000)

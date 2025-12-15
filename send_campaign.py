@@ -46,13 +46,14 @@ def get_subscribers():
         return []
 
 def send_campaign():
+    logs = []
     receivers = get_subscribers()
     
     if not receivers:
-        print("No subscribers found in database.")
-        return
+        logs.append("No subscribers found in database.")
+        return logs
 
-    print(f"Found {len(receivers)} subscribers. Starting email campaign...")
+    logs.append(f"Found {len(receivers)} subscribers. Starting email campaign...")
 
     context = ssl.create_default_context()
 
@@ -69,20 +70,26 @@ def send_campaign():
                     msg.set_content(BODY)
                     
                     smtp.send_message(msg)
+                    logs.append(f"✅ Sent to: {email_receiver}")
                     print(f"✅ Sent to: {email_receiver}")
                 except Exception as e:
+                    logs.append(f"❌ Failed to send to {email_receiver}: {e}")
                     print(f"❌ Failed to send to {email_receiver}: {e}")
                     
-        print("\nCampaign finished!")
+        logs.append("Campaign finished!")
         
     except smtplib.SMTPAuthenticationError:
-        print("Authentication Failed. Please check your email and app password.")
+        logs.append("Authentication Failed. Please check your email and app password.")
     except Exception as e:
-        print(f"An error occurred: {e}")
+        logs.append(f"An error occurred: {e}")
+    
+    return logs
 
 if __name__ == '__main__':
     confirmation = input(f"You are about to send emails to {len(get_subscribers())} people. Type 'YES' to proceed: ")
     if confirmation == 'YES':
-        send_campaign()
+        results = send_campaign()
+        for line in results:
+            print(line)
     else:
         print("Campaign cancelled.")
