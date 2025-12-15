@@ -4,5 +4,6 @@ __pycache__/
 *.db
 *.pyc
 *.json
+password.py
 instance/
 .DS_Store
