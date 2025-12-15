@@ -1,14 +1,14 @@
 :root {
-  --bg-color: #f3f4f6;
-  --text-color: #1f2937;
-  --text-muted: #6b7280;
-  --accent-main: #2ca58d; /* Teal from logo */
-  --accent-secondary: #1a7f6c; /* Darker teal for hover */
-  --glass-bg: rgba(255, 255, 255, 0.7);
-  --glass-border: rgba(255, 255, 255, 1);
-  --input-bg: #ffffff;
+  --bg-color: #101015;
+  --text-color: #ffffff;
+  --text-muted: #a0a0b0;
+  --accent-blue: #3b82f6;
+  --accent-purple: #8b5cf6;
+  --accent-magenta: #ec4899;
+  --glass-bg: rgba(255, 255, 255, 0.05);
+  --glass-border: rgba(255, 255, 255, 0.1);
+  --input-bg: rgba(0, 0, 0, 0.3);
   --font-main: "Inter", sans-serif;
-  --shadow-color: rgba(0, 0, 0, 0.1);
 }
 
 * {
@@ -30,7 +30,7 @@ body {
   -webkit-font-smoothing: antialiased;
 }
 
-/* Background Gradient Effect */
+/* Background Glowing Effect */
 .glow-container {
   position: absolute;
   top: 0;
@@ -39,16 +39,64 @@ body {
   height: 100%;
   z-index: -1;
   overflow: hidden;
+  filter: blur(80px); /* Creates the diffused light look */
+  background: none; /* Reset gradient */
+}
+
+.glow-blob {
+  position: absolute;
+  border-radius: 50%;
+  opacity: 0.6;
+  animation: float 10s infinite alternate ease-in-out;
+}
+
+.glow-blob-1 {
+  width: 600px;
+  height: 600px;
+  background: radial-gradient(circle, var(--accent-blue) 0%, transparent 70%);
+  top: 20%;
+  left: 20%;
+  transform: translate(-50%, -50%);
+  animation-delay: 0s;
+}
+
+.glow-blob-2 {
+  width: 500px;
+  height: 500px;
   background: radial-gradient(
-      circle at 10% 20%,
-      rgba(44, 165, 141, 0.1) 0%,
-      transparent 40%
-    ),
-    radial-gradient(
-      circle at 90% 80%,
-      rgba(44, 165, 141, 0.05) 0%,
-      transparent 40%
-    );
+    circle,
+    var(--accent-magenta) 0%,
+    transparent 70%
+  );
+  bottom: 20%;
+  right: 20%;
+  transform: translate(50%, 50%);
+  animation-delay: -2s;
+}
+
+.glow-blob-3 {
+  width: 400px;
+  height: 400px;
+  background: radial-gradient(circle, var(--accent-purple) 0%, transparent 70%);
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  animation-duration: 15s;
+}
+
+@keyframes float {
+  0% {
+    transform: translate(0px, 0px) scale(1);
+  }
+  33% {
+    transform: translate(30px, -50px) scale(1.1);
+  }
+  66% {
+    transform: translate(-20px, 20px) scale(0.9);
+  }
+  100% {
+    transform: translate(0px, 0px) scale(1);
+  }
 }
 
 /* Glass Card Container */
@@ -61,23 +109,24 @@ body {
 
 .glass-card {
   background: var(--glass-bg);
-  backdrop-filter: blur(20px);
-  -webkit-backdrop-filter: blur(20px);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
   border: 1px solid var(--glass-border);
   border-radius: 24px;
   padding: 60px 48px;
   width: 100%;
   max-width: 480px;
   text-align: center;
-  box-shadow: 0 20px 40px var(--shadow-color);
+  box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.36);
   transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
 .glass-card:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 25px 50px var(--shadow-color);
+  box-shadow: 0 12px 40px 0 rgba(0, 0, 0, 0.5);
+  transform: none; /* Reset specific transform from light theme if helpful, though hover effect is nice */
 }
 
+/* Logo Styles */
 .logo-container {
   margin-bottom: 24px;
 }
@@ -87,20 +136,25 @@ body {
   height: auto;
   display: block;
   margin: 0 auto;
+  border-radius: 12px; /* Smooth corners if it has a background */
 }
 
 /* Typography */
 .headline {
-  font-size: 2rem;
+  font-size: 2.5rem;
   font-weight: 700;
-  margin-bottom: 12px;
-  color: var(--text-color);
+  margin-bottom: 16px;
+  letter-spacing: -0.02em;
+  background: linear-gradient(to right, #fff, #b4b4b4);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
 }
 
 .subtext {
   font-size: 1rem;
   color: var(--text-muted);
-  margin-bottom: 32px;
+  margin-bottom: 40px;
   line-height: 1.6;
 }
 
@@ -120,23 +174,24 @@ input[type="email"] {
   width: 100%;
   padding: 16px 20px;
   background-color: var(--input-bg);
-  border: 1px solid #e5e7eb;
+  border: 1px solid var(--glass-border);
   border-radius: 12px;
-  color: var(--text-color);
+  color: white;
   font-size: 1rem;
   font-family: inherit;
-  transition: all 0.2s ease;
+  transition: all 0.3s ease;
   outline: none;
-  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+  box-shadow: none; /* Reset light theme shadow */
 }
 
 input[type="email"]::placeholder {
-  color: #9ca3af;
+  color: #6b6b7b;
 }
 
 input[type="email"]:focus {
-  border-color: var(--accent-main);
-  box-shadow: 0 0 0 4px rgba(44, 165, 141, 0.1);
+  border-color: var(--accent-blue);
+  background-color: rgba(0, 0, 0, 0.5);
+  box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.2);
 }
 
 .cta-button {
@@ -144,20 +199,28 @@ input[type="email"]:focus {
   padding: 16px;
   border: none;
   border-radius: 12px;
-  background-color: var(--accent-main);
+  background: linear-gradient(135deg, var(--accent-blue), var(--accent-purple));
   color: white;
   font-size: 1rem;
   font-weight: 600;
   font-family: inherit;
   cursor: pointer;
-  transition: all 0.2s ease;
-  box-shadow: 0 4px 6px -1px rgba(44, 165, 141, 0.4);
+  transition: all 0.3s ease;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  position: relative;
+  overflow: hidden;
+  box-shadow: none; /* Reset light theme shadow */
 }
 
 .cta-button:hover {
-  background-color: var(--accent-secondary);
-  transform: translateY(-1px);
-  box-shadow: 0 6px 8px -1px rgba(44, 165, 141, 0.5);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 20px rgba(59, 130, 246, 0.4);
+  background: linear-gradient(
+    135deg,
+    var(--accent-blue),
+    var(--accent-purple)
+  ); /* Ensure gradient stays */
 }
 
 .cta-button:active {
@@ -183,15 +246,15 @@ input[type="email"]:focus {
 }
 
 .message.success {
-  background-color: #ecfdf5;
-  color: #047857;
-  border: 1px solid #d1fae5;
+  background-color: rgba(16, 185, 129, 0.2);
+  color: #34d399;
+  border: 1px solid rgba(16, 185, 129, 0.3);
 }
 
 .message.error {
-  background-color: #fef2f2;
-  color: #b91c1c;
-  border: 1px solid #fee2e2;
+  background-color: rgba(239, 68, 68, 0.2);
+  color: #f87171;
+  border: 1px solid rgba(239, 68, 68, 0.3);
 }
 
 /* Responsive */
