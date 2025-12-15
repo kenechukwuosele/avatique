@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Join the Waitlist</title>
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <!-- Custom CSS -->
+    <link
+      rel="stylesheet"
+      href="{{ url_for('static', filename='style.css') }}"
+    />
+  </head>
+  <body>
+    <!-- Background Glow Elements -->
+    <div class="glow-container">
+      <div class="glow-blob glow-blob-1"></div>
+      <div class="glow-blob glow-blob-2"></div>
+      <div class="glow-blob glow-blob-3"></div>
+    </div>
+
+    <!-- Main Content -->
+    <main class="container">
+      <div class="glass-card">
+        <h1 class="headline">Join the waitlist</h1>
+        <p class="subtext">
+          Get exclusive early access to our platform and stay informed until
+          launch day.
+        </p>
+
+        <form id="waitlist-form" class="waitlist-form">
+          <div class="input-group">
+            <input
+              type="email"
+              name="email"
+              id="email"
+              placeholder="Your email address"
+              required
+              autocomplete="email"
+            />
+          </div>
+          <button type="submit" class="cta-button">Join Now</button>
+        </form>
+
+        <div id="message" class="message hidden"></div>
+      </div>
+    </main>
+
+    <script src="{{ url_for('static', filename='script.js') }}"></script>
+  </body>
+</html>
