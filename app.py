@@ -1,4 +1,6 @@
 import os
+import csv
+from io import StringIO
 from flask import Flask, render_template, request, jsonify
 from flask_sqlalchemy import SQLAlchemy
 from dotenv import load_dotenv
@@ -82,6 +84,42 @@ def trigger_campaign():
     logs = send_campaign()
     
     return render_template('admin.html', logs=logs)
+
+@app.route('/export', methods=['POST'])
+def export_subscribers():
+    password = request.form.get('password')
+    correct_password = os.getenv('EMAIL_PASSWORD')
+    
+    # Fallback for local dev
+    if not correct_password:
+         try:
+            from avatique.password import password as local_password
+            correct_password = local_password
+         except:
+             pass
+
+    if not correct_password or password != correct_password:
+        return render_template('admin.html', error="Invalid Password")
+
+    subscribers = Subscriber.query.all()
+    
+    # Generate CSV
+    def generate():
+        data = StringIO()
+        w = csv.writer(data)
+        w.writerow(('ID', 'Email'))
+        yield data.getvalue()
+        data.seek(0)
+        data.truncate(0)
+        
+        for sub in subscribers:
+            w.writerow((sub.id, sub.email))
+            yield data.getvalue()
+            data.seek(0)
+            data.truncate(0)
+
+    # Stream the response
+    return Response(generate(), mimetype='text/csv', headers={"Content-Disposition": "attachment; filename=subscribers.csv"})
 
 if __name__ == '__main__':
     app.run(debug=True, port=5000)
