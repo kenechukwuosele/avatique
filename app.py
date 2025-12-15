@@ -79,11 +79,14 @@ def trigger_campaign():
 
     # Import here to avoid circular dependency (app -> send_campaign -> app)
     from send_campaign import send_campaign
+    import threading
     
-    # Run the campaign
-    logs = send_campaign()
+    # Run the campaign in a separate thread so it doesn't timeout
+    # logs will be printed to the server console instead of returned to the page
+    thread = threading.Thread(target=send_campaign)
+    thread.start()
     
-    return render_template('admin.html', logs=logs)
+    return render_template('admin.html', logs=["Campaign started in background! Check Render logs for progress."])
 
 @app.route('/view_subscribers', methods=['POST'])
 def view_subscribers():
